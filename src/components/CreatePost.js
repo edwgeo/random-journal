@@ -1,0 +1,46 @@
+import React, {memo, useRef} from "react";
+import '../css/CreatePost.css';
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from "../firebase/firebase";
+
+export const CreatePost = memo(() => {
+    // using refs rather than using state; we avoid rerendering on every new letter this way
+    const titleRef = useRef(null)
+    const textRef = useRef(null)
+    const submitRef = useRef(null)
+    const createDoc = async () => {
+        const docRef = await addDoc(collection(db, "posts"), {
+            title: titleRef.current.value,
+            text: textRef.current.value
+        })
+    }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        submitRef.current.setAttribute("disabled", true)
+        console.log(titleRef.current.value)
+        console.log(textRef.current.value)
+        await createDoc()
+        submitRef.current.removeAttribute("disabled")
+        titleRef.current.value = ""
+        textRef.current.value = ""
+    }
+    
+    return (
+        <>
+            <form>
+                <div>Title: <input className='input-with-padding' ref={titleRef} placeholder="title"></input></div>
+                <div>
+                    <textarea 
+                        className='input-with-padding'
+                        ref={textRef}
+                        placeholder="Enter your text here..." 
+                        rows='8' 
+                        cols='80'
+                    >
+                    </textarea>
+                </div>
+                <button ref={submitRef} onClick={handleSubmit} type='submit'>Submit</button>
+            </form>
+        </>
+    )
+})

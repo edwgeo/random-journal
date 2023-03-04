@@ -6,6 +6,7 @@ import { db } from './firebase/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { PostsContext } from "./utils/PostsContext";
 import { CreatePost } from "./components/CreatePost";
+import EditPost from "./components/EditPost";
 import { About } from "./components/About";
 
 function App() {
@@ -40,14 +41,15 @@ function App() {
 		<div className="App">
 			<nav>
 				[ <a href="/">All Posts </a> |
-				<a href="/create"> Create a Post</a> |
-				<a href="/about"> About</a> ]
+				<Link to="/create"> Create a Post</Link> |
+				<Link to="/about"> About</Link> ]
 			</nav>
 			<Routes>
 				<Route path="/" element={<Posts />} />
 				<Route path="/post/:id" element={<Post />} />
 				<Route path="/create" element={<CreatePost />} />
 				<Route path="/about" element={<About />} />
+				<Route path="/edit/:id" element={<EditPost />} />
 			</Routes>
 		</div>
 		</center>
