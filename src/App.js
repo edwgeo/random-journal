@@ -2,8 +2,6 @@ import { Post } from "./components/Post";
 import { Posts } from "./components/Posts";
 import { Routes, Route, Link } from "react-router-dom";
 import React, { useEffect, useState, useMemo } from 'react';
-import { db } from './firebase/firebase';
-import { collection, getDocs } from 'firebase/firestore';
 import { PostsContext } from "./utils/PostsContext";
 import { CreatePost } from "./components/CreatePost";
 import EditPost from "./components/EditPost";
@@ -17,23 +15,6 @@ function App() {
 		() => ({posts, setPosts}), 
 		[posts]
 	)
-
-	// asynchronously get the posts from firebase
-	const getPosts = async () => {
-		const querySnapshot = await getDocs(collection(db, "posts"))
-
-		const simplifiedPostData = []
-		querySnapshot.forEach(doc => {
-			// console.log(doc.id, " => ", doc.data());
-			simplifiedPostData.push({ id: doc.id, data: doc.data() })
-		})
-		// console.log(simplifiedPostData)
-		setPosts(simplifiedPostData)
-	}
-
-	useEffect(() => {
-		getPosts()
-	}, [])
 
 	return (
 		<PostsContext.Provider value={value}>

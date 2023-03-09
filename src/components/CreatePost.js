@@ -2,8 +2,10 @@ import React, {memo, useRef} from "react";
 import '../css/CreatePost.css';
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from "../firebase/firebase";
+import { useNavigate } from "react-router-dom";
 
 export const CreatePost = memo(() => {
+    const navigate = useNavigate()
     // using refs rather than using state; we avoid rerendering on every new letter this way
     const titleRef = useRef(null)
     const textRef = useRef(null)
@@ -17,12 +19,13 @@ export const CreatePost = memo(() => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         submitRef.current.setAttribute("disabled", true)
-        console.log(titleRef.current.value)
-        console.log(textRef.current.value)
+        console.log("Create Post title: ", titleRef.current.value)
+        console.log("Create Post text: ", textRef.current.value)
         await createDoc()
         submitRef.current.removeAttribute("disabled")
         titleRef.current.value = ""
         textRef.current.value = ""
+        navigate('/')
     }
     
     return (

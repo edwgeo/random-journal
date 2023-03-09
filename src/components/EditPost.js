@@ -8,7 +8,7 @@ const EditPost = memo(() => {
     const {id} = useParams()
     const location = useLocation()
     const navigate = useNavigate()
-    console.log(location)
+    // console.log(location)
     const {title, text} = location.state
 
     // using refs rather than using state; we avoid rerendering on every new letter this way
@@ -25,8 +25,8 @@ const EditPost = memo(() => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         submitRef.current.setAttribute("disabled", true)
-        console.log(titleRef.current.value)
-        console.log(textRef.current.value)
+        console.log("EditPost title: ", titleRef.current.value)
+        console.log("EditPost text: ", textRef.current.value)
         await modifyDoc()
         submitRef.current.removeAttribute("disabled")
         titleRef.current.value = ""

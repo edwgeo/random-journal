@@ -1,9 +1,29 @@
-import React, { useContext, memo } from 'react';
+import React, { useEffect, useContext, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { PostsContext } from '../utils/PostsContext';
+import { db } from '../firebase/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export const Posts = memo(() => {
     const {posts, setPosts} = useContext(PostsContext)
+    
+    // asynchronously get the posts from firebase
+	const getPosts = async () => {
+		const querySnapshot = await getDocs(collection(db, "posts"))
+
+		const simplifiedPostData = []
+		querySnapshot.forEach(doc => {
+			// console.log(doc.id, " => ", doc.data());
+			simplifiedPostData.push({ id: doc.id, data: doc.data() })
+		})
+		// console.log(simplifiedPostData)
+		setPosts(simplifiedPostData)
+	}
+
+	useEffect(() => {
+		getPosts()
+	}, [])
+
     return (
         <div>
             <h2>All Posts</h2>

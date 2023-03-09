@@ -1,19 +1,24 @@
 import React, {memo, useEffect, useState} from 'react';
-import { useParams } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { useParams, useNavigate } from 'react-router-dom';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
-import { Link } from 'react-router-dom';
 
 // wrapping a functional component with memo ensures that it only rerenders if the props 
 // it receives are the same object (not just look the same, they ARE the SAME)
 export const Post = memo(() => {
     const {id} = useParams()
     const [post, setPost] = useState()
+    const navigate = useNavigate()
+
+    const deletePost = async (id) => {
+        await deleteDoc(doc(db, "posts", id))
+        navigate('/')
+    }
     
     const getPost = async () => {
         const docRef = doc(db, "posts", id)
         const docSnap = await getDoc(docRef)
-        console.log(docSnap.data())
+        // console.log(docSnap.data())
         setPost(docSnap.data())
     }
     useEffect(() => {
@@ -25,9 +30,11 @@ export const Post = memo(() => {
             ? <>
                 <h3>{post.title}</h3>
                 <div>{post.text}</div>
-                <Link to={"/edit/" + id} state={{title: post.title, text: post.text}}>
+                <button onClick={() => {navigate("/edit/" + id, {state: {title: post.title, text: post.text}})}}>Edit Post</button>
+                {/* <Link to={"/edit/" + id} state={{title: post.title, text: post.text}}>
                     Edit this post
-                </Link>
+                </Link> */}
+                <button onClick={() => deletePost(id)}>Delete this post</button>
             </>
             : <h3>Loading...</h3>
         }
