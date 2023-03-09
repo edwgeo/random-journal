@@ -2,11 +2,12 @@ import React, {memo, useEffect, useRef} from "react";
 import '../css/CreatePost.css';
 import { collection, addDoc, doc, updateDoc } from "firebase/firestore"; 
 import { db } from "../firebase/firebase";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const EditPost = memo(() => {
     const {id} = useParams()
     const location = useLocation()
+    const navigate = useNavigate()
     console.log(location)
     const {title, text} = location.state
 
@@ -30,6 +31,7 @@ const EditPost = memo(() => {
         submitRef.current.removeAttribute("disabled")
         titleRef.current.value = ""
         textRef.current.value = ""
+        navigate(-1) // same as clicking back button
     }
     useEffect(() => {
         titleRef.current.value = title;
