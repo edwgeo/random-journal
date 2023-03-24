@@ -1,6 +1,6 @@
 import React, {memo, useRef} from "react";
 import '../css/CreatePost.css';
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc, Timestamp } from "firebase/firestore"; // was hard to find out how to import Timestamp, I figured that if it's used like firebase.firestore.Timestamp, then I should be able to just import Timestemp from firebase/firestore
 import { db } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -11,9 +11,12 @@ export const CreatePost = memo(() => {
     const textRef = useRef(null)
     const submitRef = useRef(null)
     const createDoc = async () => {
+        // get the current date and change it into a Timestamp object
+        const timestamp = Timestamp.now()
         const docRef = await addDoc(collection(db, "posts"), {
             title: titleRef.current.value,
-            text: textRef.current.value
+            text: textRef.current.value,
+            created: timestamp
         })
     }
     const handleSubmit = async (e) => {

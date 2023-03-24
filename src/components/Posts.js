@@ -29,7 +29,7 @@ export const Posts = memo(() => {
             <h2>All Posts</h2>
             {posts.length > 0
             ? posts.map((post) => {
-                console.log(post)
+                // console.log(post)
                 return (
                     <div key={post.id}>
                         <Link to={"/post/"+post.id}>{post.data.title}</Link>

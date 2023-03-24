@@ -18,7 +18,7 @@ export const Post = memo(() => {
     const getPost = async () => {
         const docRef = doc(db, "posts", id)
         const docSnap = await getDoc(docRef)
-        // console.log(docSnap.data())
+        // console.log("Post:", docSnap.data())
         setPost(docSnap.data())
     }
     useEffect(() => {
@@ -29,11 +29,9 @@ export const Post = memo(() => {
         {post 
             ? <>
                 <h3>{post.title}</h3>
+                <div>Created: {post.created.toDate().toLocaleDateString()}</div>
                 <div>{post.text}</div>
                 <button onClick={() => {navigate("/edit/" + id, {state: {title: post.title, text: post.text}})}}>Edit Post</button>
-                {/* <Link to={"/edit/" + id} state={{title: post.title, text: post.text}}>
-                    Edit this post
-                </Link> */}
                 <button onClick={() => deletePost(id)}>Delete this post</button>
             </>
             : <h3>Loading...</h3>
