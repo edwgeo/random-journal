@@ -88,3 +88,5 @@ export const Posts = memo(() => {
 // use navigate() to send them to these posts
 // should/could we use useContext to store the post data? We've already queried and got all the posts and their data
 // otherwise, we would need to make another call to firebase to get the post based on the id.
+
+// sorting in JS is a bit weird (see compareFn): https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
